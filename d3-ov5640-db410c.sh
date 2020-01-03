@@ -6,7 +6,7 @@ set -e
 MODE=${1}
 FMT=${2}
 RES=${3}
-SENSOR_IDX=1
+SENSOR_IDX=0
 if [ ${SENSOR_IDX} -eq 1 ]; then
 	SENSOR_SUBDEV="v4l-subdev11"
 else
@@ -124,7 +124,7 @@ elif [ ${MODE} = "recordmpg" ]; then
 		h264parse ! mp4mux ! filesink location=${OUTFILE}
 	else
 		gst-launch-1.0 -e v4l2src device=${VIDEO_DEV} ! \
-		video/x-raw,format=${GST_FMT},width=${WIDTH},height=${HEIGHT},framerate=30/1 ! \
+		video/x-raw,format=${GST_FMT},width=${WIDTH},height=${HEIGHT} ! \
 		videoconvert ! \
 		v4l2h264enc extra-controls="controls,h264_profile=4,h264_level=10,video_bitrate=2500000" ! \
 		h264parse ! mp4mux ! filesink location=${OUTFILE}
